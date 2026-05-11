@@ -124,7 +124,7 @@
 
 
 
-    fetch("http://localhost:8080/auth/login",{
+    fetch("/auth/login",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
@@ -144,7 +144,7 @@
         window.location = "Dashboard.html";
     })
     .catch(err => {
-        console.error("Error"+rr);
+        console.error("Error"+err);
         alert("Login failed");
     });
 }
