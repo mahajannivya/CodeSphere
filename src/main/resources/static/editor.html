@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CodeSphere Editor</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI',sans-serif;
+            -webkit-font-smoothing:antialiased;
+        }
+
+        html{
+            scroll-behavior:smooth;
+        }
+
+        body{
+            background:#0d1117;
+            color:white;
+            min-height:100vh;
+            overflow:hidden;
+        }
+
+        /* BACKGROUND */
+
+        .bg{
+            position:fixed;
+            width:500px;
+            height:500px;
+            background:radial-gradient(circle,#1f6feb,transparent);
+            filter:blur(90px);
+            top:-150px;
+            left:-150px;
+            opacity:0.3;
+            z-index:-1;
+        }
+
+        /* TOPBAR */
+
+        .topbar{
+
+            margin:10px;
+
+            padding:12px 20px;
+
+            border-radius:16px;
+
+            display:flex;
+
+            justify-content:space-between;
+
+            align-items:center;
+
+            background:rgba(22,27,34,0.7);
+
+            backdrop-filter:blur(15px);
+
+            border:
+            1px solid rgba(88,166,255,0.2);
+        }
+
+        /* BRAND */
+
+        .brand{
+
+            font-size:22px;
+
+            font-weight:700;
+
+            color:#58a6ff;
+
+            animation:
+            glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow{
+
+            from{
+                text-shadow:0 0 5px #58a6ff;
+            }
+
+            to{
+                text-shadow:
+                0 0 10px #58a6ff,
+                0 0 20px #1f6feb,
+                0 0 30px #1f6feb;
+            }
+        }
+
+        /* ROOM INFO */
+
+        .room-info{
+
+            display:flex;
+
+            align-items:center;
+
+            gap:10px;
+        }
+
+        /* BADGES */
+
+        .badge{
+
+            background:
+            rgba(88,166,255,0.1);
+
+            border:
+            1px solid rgba(88,166,255,0.3);
+
+            padding:6px 12px;
+
+            border-radius:10px;
+
+            font-size:13px;
+
+            transition:0.3s ease;
+        }
+
+        .badge:hover{
+
+            border-color:#58a6ff;
+
+            box-shadow:
+            0 0 10px rgba(88,166,255,0.18);
+        }
+
+        /* BUTTONS */
+
+        button{
+
+            background:#161b22;
+
+            color:white;
+
+            border:
+            1px solid rgba(88,166,255,0.20);
+
+            padding:8px 14px;
+
+            border-radius:8px;
+
+            cursor:pointer;
+
+            transition:0.3s ease;
+        }
+
+        button:hover{
+
+            transform:translateY(-2px);
+
+            border-color:#58a6ff;
+
+            background:
+            rgba(88,166,255,0.10);
+
+            box-shadow:
+            0 0 10px rgba(88,166,255,0.25);
+        }
+
+        .exit-btn{
+
+            background:#1f6feb;
+
+            border:none;
+        }
+
+        .lang-btn{
+
+            background:#21262d;
+        }
+
+        /* MAIN CONTAINER */
+
+        .container{
+
+            display:flex;
+
+            height:calc(100vh - 90px);
+
+            overflow:hidden;
+        }
+
+        /* EDITOR SECTION */
+
+        .editor-section{
+
+            flex:3;
+
+            padding:10px;
+
+            display:flex;
+
+            flex-direction:column;
+
+            min-height:0;
+        }
+
+        .editor-header{
+
+            display:flex;
+
+            justify-content:space-between;
+
+            align-items:center;
+
+            background:#161b22;
+
+            padding:12px;
+
+            border-radius:12px 12px 0 0;
+
+            border:
+            1px solid rgba(88,166,255,0.15);
+        }
+
+        #editor{
+
+            flex:1;
+
+            min-height:0;
+
+            border-radius:0 0 12px 12px;
+
+            overflow:hidden;
+
+            border:
+            1px solid rgba(88,166,255,0.15);
+
+            border-top:none;
+        }
+
+        /* RIGHT SECTION */
+
+        .right-section{
+
+            width:360px;
+
+            display:flex;
+
+            flex-direction:column;
+
+            gap:10px;
+
+            padding:10px;
+
+            min-height:0;
+        }
+
+        /* BOXES */
+
+        .box{
+
+            background:#161b22;
+
+            border-radius:14px;
+
+            padding:14px;
+
+            overflow:auto;
+
+            border:
+            1px solid rgba(88,166,255,0.18);
+
+            transition:0.3s ease;
+        }
+
+        .box:hover{
+
+            border-color:#58a6ff;
+
+            box-shadow:
+            0 0 12px rgba(88,166,255,0.15);
+        }
+
+        /* INPUT SMALLER */
+
+        .box:first-child{
+
+            flex:0.7;
+        }
+
+        /* OUTPUT BIGGER */
+
+        .box:last-child{
+
+            flex:1.6;
+        }
+
+        .box h3{
+
+            margin-bottom:12px;
+
+            color:#58a6ff;
+        }
+
+        /* INPUT AREA */
+
+        #input{
+
+            width:100%;
+
+            height:100%;
+
+            min-height:120px;
+
+            resize:none;
+
+            background:#0d1117;
+
+            color:white;
+
+            border:
+            1px solid rgba(88,166,255,0.25);
+
+            border-radius:12px;
+
+            padding:14px;
+
+            outline:none;
+
+            font-size:14px;
+
+            transition:0.3s ease;
+        }
+
+        #input:focus{
+
+            border-color:#58a6ff;
+
+            box-shadow:
+            0 0 10px rgba(88,166,255,0.25);
+        }
+
+        /* OUTPUT */
+
+        #output{
+
+            white-space:pre-wrap;
+
+            word-break:break-word;
+
+            line-height:1.5;
+
+            min-height:260px;
+
+            color:#e6edf3;
+        }
+
+        /* SELECT */
+
+        select{
+
+            background:#0d1117;
+
+            color:white;
+
+            border:
+            1px solid rgba(88,166,255,0.25);
+
+            padding:8px 12px;
+
+            border-radius:8px;
+
+            outline:none;
+
+            transition:0.3s ease;
+        }
+
+        select:focus{
+
+            border-color:#58a6ff;
+
+            box-shadow:
+            0 0 10px rgba(88,166,255,0.20);
+        }
+
+        /* RUN BUTTON */
+
+        button.run{
+
+            background:#238636;
+
+            border:none;
+        }
+
+        button.run:hover{
+
+            background:#2ea043;
+
+            box-shadow:
+            0 0 12px rgba(46,160,67,0.35);
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width:900px){
+
+            .container{
+
+                flex-direction:column;
+
+                height:auto;
+            }
+
+            .right-section{
+
+                width:100%;
+
+                height:450px;
+            }
+
+            .topbar{
+
+                flex-wrap:wrap;
+
+                gap:10px;
+            }
+
+            .room-info{
+
+                flex-wrap:wrap;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+    <div class="brand">
+        CodeSphere
+    </div>
+
+    <div class="room-info">
+
+        <button onclick="changeUser()">
+            Change Name
+        </button>
+
+        <button class="lang-btn"
+                onclick="showLanguages()">
+
+            Programming Languages
+        </button>
+
+        <span class="badge" id="userCount">
+            Users : 0
+        </span>
+
+        <span class="badge" id="roomDisplay"></span>
+
+        <span class="badge" id="langDisplay"></span>
+
+    </div>
+
+    <button class="exit-btn"
+            onclick="exitRoom()">
+
+        Exit
+    </button>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="container">
+
+    <!-- EDITOR -->
+
+    <div class="editor-section">
+
+        <div class="editor-header">
+
+            <span id="editorTitle">
+                Live Collaborative Editor
+            </span>
+
+            <div>
+
+                <select id="language"
+                        onchange="changeLanguage()">
+
+                    <option value="java">Java</option>
+
+                    <option value="python">Python</option>
+
+                    <option value="cpp">C++</option>
+
+                </select>
+
+                <button class="run"
+                        onclick="runCode()">
+
+                    ▶ Run
+                </button>
+
+            </div>
+
+        </div>
+
+        <div id="editor"></div>
+
+    </div>
+
+    <!-- RIGHT PANEL -->
+
+    <div class="right-section">
+
+        <!-- INPUT -->
+
+        <div class="box">
+
+            <h3>Input</h3>
+
+            <textarea id="input"
+                      placeholder="Enter input here..."></textarea>
+
+        </div>
+
+        <!-- OUTPUT -->
+
+        <div class="box">
+
+            <h3>Output</h3>
+
+            <pre id="output"></pre>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- LIBRARIES -->
+
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+
+<script src="https://unpkg.com/monaco-editor@0.44.0/min/vs/loader.js"></script>
+
+<script>
+
+    let editor;
+    let stompClient;
+    let isRemoteChange = false;
+    let timeout;
+
+    /* USER */
+
+    let userId = localStorage.getItem("userId");
+
+    if(!userId){
+
+        userId = crypto.randomUUID();
+
+        localStorage.setItem("userId", userId);
+    }
+
+    let username = localStorage.getItem("username");
+
+    if(!username){
+
+        username =
+        prompt("Enter your name") || "User";
+
+        localStorage.setItem("username", username);
+    }
+
+    /* URL PARAMS */
+
+    const urlParams =
+    new URLSearchParams(window.location.search);
+
+    const roomId =
+    urlParams.get("room") || "room1";
+
+    const selectedLang =
+    urlParams.get("lang") || "java";
+
+    /* DISPLAY */
+
+    document.getElementById("roomDisplay")
+    .innerText = "Room : " + roomId;
+
+    document.getElementById("langDisplay")
+    .innerText =
+    "Language : " +
+    selectedLang.charAt(0).toUpperCase() +
+    selectedLang.slice(1);
+
+    /* MONACO */
+
+    require.config({
+
+        paths:{
+            vs:'https://unpkg.com/monaco-editor@0.44.0/min/vs'
+        }
+    });
+
+    require(["vs/editor/editor.main"], function(){
+
+        editor = monaco.editor.create(
+
+            document.getElementById("editor"),
+
+            {
+                value:"",
+                language:selectedLang,
+                theme:"vs-dark",
+                automaticLayout:true,
+                fontSize:15,
+                minimap:{ enabled:false },
+                smoothScrolling:true
+            }
+        );
+
+        document.getElementById("language").value =
+        selectedLang;
+
+        const saved =
+        localStorage.getItem("code_" + roomId);
+
+        if(saved && saved.trim() !== ""){
+
+            editor.setValue(saved);
+        }
+        else{
+
+            setInitialTemplate(selectedLang);
+        }
+
+        connectWebSocket();
+
+        editor.onDidChangeModelContent(() => {
+
+            if(isRemoteChange) return;
+
+            localStorage.setItem(
+                "code_" + roomId,
+                editor.getValue()
+            );
+
+            clearTimeout(timeout);
+
+            timeout = setTimeout(() => {
+
+                if(stompClient &&
+                   stompClient.connected){
+
+                    stompClient.send(
+
+                        "/app/code",
+
+                        {},
+
+                        JSON.stringify({
+                            roomId:roomId,
+                            code:editor.getValue()
+                        })
+                    );
+                }
+
+            }, 300);
+        });
+    });
+
+    /* CHANGE USER */
+
+    function changeUser(){
+
+        localStorage.removeItem("username");
+
+        location.reload();
+    }
+
+    /* LANGUAGES */
+
+    function showLanguages(){
+
+        window.location.href =
+        "languages.html";
+    }
+
+    /* WEBSOCKET */
+
+    function connectWebSocket(){
+
+        const socket =
+        new SockJS("/ws");
+
+        stompClient =
+        Stomp.over(socket);
+
+        stompClient.connect({}, function(){
+
+            /* USER COUNT */
+
+            stompClient.subscribe(
+
+                `/topic/${roomId}/users`,
+
+                function(msg){
+
+                    const data =
+                    JSON.parse(msg.body);
+
+                    document.getElementById("userCount")
+                    .innerText =
+                    "Users : " + data.count;
+                }
+            );
+
+            /* CODE */
+
+            let firstLoad = true;
+
+            stompClient.subscribe(
+
+                `/topic/${roomId}/code`,
+
+                function(msg){
+
+                    if(firstLoad &&
+                       editor.getValue().length > 0){
+
+                        firstLoad = false;
+                        return;
+                    }
+
+                    if(editor.getValue() === msg.body)
+                        return;
+
+                    isRemoteChange = true;
+
+                    editor.setValue(msg.body);
+
+                    isRemoteChange = false;
+
+                    firstLoad = false;
+                }
+            );
+
+            /* OUTPUT */
+
+            stompClient.subscribe(
+
+                `/topic/${roomId}/output`,
+
+                function(msg){
+
+                    document.getElementById("output")
+                    .innerText = msg.body;
+                }
+            );
+
+            /* JOIN */
+
+            stompClient.send(
+
+                "/app/join",
+
+                {},
+
+                JSON.stringify({
+
+                    roomId:roomId,
+
+                    userId:userId,
+
+                    username:username
+                })
+            );
+        });
+    }
+
+    /* TEMPLATES */
+
+    function setInitialTemplate(lang){
+
+        const templates = {
+
+            java:
+`import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args){
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        System.out.println(n);
+    }
+}`,
+
+            python:
+`n = int(input())
+
+print(n)`,
+
+            cpp:
+`#include<iostream>
+
+using namespace std;
+
+int main(){
+
+    int n;
+
+    cin >> n;
+
+    cout << n;
+
+}`
+        };
+
+        editor.setValue(templates[lang]);
+    }
+
+    /* CHANGE LANGUAGE */
+
+    function changeLanguage(){
+
+        const lang =
+        document.getElementById("language").value;
+
+        monaco.editor.setModelLanguage(
+            editor.getModel(),
+            lang
+        );
+    }
+
+    /* RUN CODE */
+function runCode(){
+
+    const code =
+    editor.getValue();
+
+    const input =
+    document.getElementById("input").value;
+
+    const language =
+    document.getElementById("language").value;
+
+    /* CHECK INPUT REQUIREMENT */
+
+    let needsInput = false;
+
+    if(language === "java"){
+
+        if(
+            code.includes("nextInt(") ||
+            code.includes("nextLine(") ||
+            code.includes("nextDouble(") ||
+            code.includes("next(")
+        ){
+            needsInput = true;
+        }
+    }
+
+    else if(language === "python"){
+
+        if(code.includes("input(")){
+
+            needsInput = true;
+        }
+    }
+
+    else if(language === "cpp"){
+
+        if(
+            code.includes("cin >>")
+        ){
+            needsInput = true;
+        }
+    }
+
+    /* ALERT */
+
+    if(needsInput &&
+       input.trim() === ""){
+
+        alert(
+            "This program requires input.\nPlease enter input before running."
+        );
+
+        return;
+    }
+
+    document.getElementById("output")
+    .innerText = "Running...";
+
+    fetch(`/code/run/${roomId}`, {
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+
+            code:code,
+
+            input:input,
+
+            language:language
+        })
+    })
+
+    .then(res => res.text())
+
+    .then(data => {
+
+        document.getElementById("output")
+        .innerText = data;
+
+        if(stompClient){
+
+            stompClient.send(
+
+                "/app/output",
+
+                {},
+
+                JSON.stringify({
+
+                    roomId:roomId,
+
+                    output:data
+                })
+            );
+        }
+    })
+
+    .catch(() => {
+
+        document.getElementById("output")
+        .innerText =
+        "Execution Error";
+    });
+}
+
+
+    /* EXIT */
+
+    function exitRoom(){
+
+        window.location.href =
+        "Dashboard.html";
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About | CodeSphere</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI',sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+            background: linear-gradient(135deg,#f8fafc,#e0f2fe,#f5f5f0);
+        }
+
+        /* GLOW BACKGROUND */
+        .bg1, .bg2{
+            position:absolute;
+            width:400px;
+            height:400px;
+            border-radius:50%;
+            filter: blur(120px);
+            opacity:0.5;
+        }
+
+        .bg1{
+            background:#58a6ff;
+            top:-100px;
+            left:-100px;
+        }
+
+        .bg2{
+            background:#a5b4fc;
+            bottom:-100px;
+            right:-100px;
+        }
+
+        /* TOP BAR */
+        .topbar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:20px 40px;
+        }
+
+        .logo{
+            font-size:24px;
+            font-weight:bold;
+            color:#1f6feb;
+        }
+
+        .back-btn{
+            padding:8px 15px;
+            border:none;
+            border-radius:10px;
+            background:rgba(31,111,235,0.1);
+            color:#1f6feb;
+            cursor:pointer;
+        }
+
+        .back-btn:hover{
+            background:#1f6feb;
+            color:white;
+        }
+
+        /* CONTAINER */
+        .container{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:25px;
+            padding:20px;
+        }
+
+        /* INTRO CARD */
+        .intro{
+            width:600px;
+            text-align:center;
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(20px);
+            border-radius:20px;
+            padding:30px;
+            box-shadow:0 10px 40px rgba(0,0,0,0.1);
+            border:1px solid rgba(255,255,255,0.4);
+        }
+
+        /* FEATURES GRID */
+        .features{
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:20px;
+        }
+
+        /* CARD */
+        .card{
+            width:280px;
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(20px);
+            border-radius:20px;
+            padding:20px;
+            box-shadow:0 10px 40px rgba(0,0,0,0.1);
+            border:1px solid rgba(255,255,255,0.4);
+            transition:0.3s;
+        }
+
+        .card:hover{
+            transform:translateY(-5px);
+            box-shadow:0 15px 40px rgba(31,111,235,0.2);
+        }
+
+        .card h3{
+            color:#1f6feb;
+            margin-bottom:10px;
+        }
+
+        .card p{
+            color:#333;
+            font-size:14px;
+            line-height:1.5;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="bg1"></div>
+<div class="bg2"></div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+    <div class="logo">CodeSphere</div>
+    <button class="back-btn" onclick="history.back()">Back</button>
+</div>
+
+<div class="container">
+
+    <!-- INTRO -->
+    <div class="intro">
+        <h2>About CodeSphere</h2>
+        <p>
+            CodeSphere is a collaborative online code editor designed to bring developers together.
+            It allows real-time coding, seamless communication, and efficient teamwork from anywhere.
+            Built with performance and simplicity in mind, it empowers both beginners and professionals.
+        </p>
+    </div>
+
+    <!-- FEATURES -->
+    <div class="features">
+
+        <div class="card">
+            <h3>Real-Time Collaboration</h3>
+            <p>
+                CodeSphere enables multiple users to work on the same code simultaneously.
+                All changes are synced instantly, ensuring smooth teamwork without delays.
+                This helps teams stay productive and aligned at all times.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Secure Code Execution</h3>
+            <p>
+                The platform ensures that all code runs in a secure and isolated environment.
+                This protects user data and prevents harmful execution.
+                Developers can confidently test and run their programs.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Multi-Language Support</h3>
+            <p>
+                CodeSphere supports multiple programming languages like Java, C++, and Python.
+                This allows developers to work in their preferred language.
+                It provides flexibility for learning and building diverse projects.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Cloud-Based Access</h3>
+            <p>
+                The editor is fully cloud-based, requiring no installation.
+                Users can access their projects from any device, anywhere.
+                This makes development more flexible and convenient.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

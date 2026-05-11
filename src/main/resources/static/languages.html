@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Programming Languages | CodeSphere</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI',sans-serif;
+        }
+
+        body{
+
+            background:
+            radial-gradient(circle at top left,#1f6feb22,transparent 35%),
+            #0d1117;
+
+            color:white;
+
+            overflow-x:hidden;
+        }
+
+        /* BACKGROUND GLOW */
+
+        .bg-glow{
+
+            position:fixed;
+
+            width:350px;
+            height:350px;
+
+            background:
+            radial-gradient(circle,#1f6feb33,transparent);
+
+            filter:blur(80px);
+
+            top:-100px;
+            left:-100px;
+
+            z-index:-1;
+
+            pointer-events:none;
+        }
+
+        /* NAVBAR */
+
+        .navbar{
+
+            display:flex;
+
+            justify-content:space-between;
+
+            align-items:center;
+
+            padding:18px 35px;
+
+            background:rgba(255,255,255,0.04);
+
+            backdrop-filter:blur(10px);
+
+            border-bottom:
+            1px solid rgba(88,166,255,0.12);
+
+            position:sticky;
+
+            top:0;
+
+            z-index:100;
+        }
+
+        /* LOGO */
+
+        .logo{
+
+            font-size:30px;
+
+            font-weight:700;
+
+            color:#58a6ff;
+
+            letter-spacing:1px;
+        }
+
+        /* BACK BUTTON */
+
+        .back-btn{
+
+            padding:10px 18px;
+
+            border-radius:10px;
+
+            border:
+            1px solid rgba(88,166,255,0.18);
+
+            background:
+            rgba(255,255,255,0.04);
+
+            color:white;
+
+            cursor:pointer;
+
+            transition:0.3s ease;
+
+            font-size:14px;
+        }
+
+        .back-btn:hover{
+
+            transform:translateY(-2px);
+
+            border-color:#58a6ff;
+
+            background:
+            rgba(88,166,255,0.10);
+
+            box-shadow:
+            0 0 14px rgba(88,166,255,0.18);
+        }
+
+        /* PAGE TITLE */
+
+        .title{
+
+            text-align:center;
+
+            padding:60px 20px 20px;
+        }
+
+        .title h1{
+
+            font-size:55px;
+
+            color:#58a6ff;
+
+            margin-bottom:12px;
+        }
+
+        .title p{
+
+            color:#c9d1d9;
+
+            font-size:18px;
+        }/* CARD CONTAINER */
+
+.languages{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:35px;
+
+    padding:50px 35px;
+}
+
+/* CARD */
+
+.card{
+
+    width:90%;
+
+    max-width:1100px;
+
+    background:
+    rgba(255,255,255,0.03);
+
+    border:
+    1px solid rgba(88,166,255,0.14);
+
+    border-radius:18px;
+
+    padding:28px;
+
+    transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:
+    0 0 22px rgba(88,166,255,0.20);
+}
+
+
+        /* CARD HEADING */
+
+        .card h2{
+
+            color:#58a6ff;
+
+            margin-bottom:18px;
+
+            font-size:34px;
+        }
+
+        /* INTRO */
+
+        .intro{
+
+            color:#c9d1d9;
+
+            line-height:1.7;
+
+            margin-bottom:22px;
+
+            font-size:15px;
+        }
+
+        /* SYNTAX TITLE */
+
+        .syntax-title{
+
+            color:#79c0ff;
+
+            margin-bottom:15px;
+
+            font-size:20px;
+        }
+
+        /* SYNTAX BLOCK */
+
+        .syntax{
+
+            margin-bottom:18px;
+        }
+
+        .syntax h4{
+
+            color:white;
+
+            margin-bottom:8px;
+
+            font-size:16px;
+        }
+
+        .syntax p{
+
+            color:#c9d1d9;
+
+            margin-bottom:8px;
+
+            line-height:1.5;
+
+            font-size:14px;
+        }
+
+        pre{
+
+            background:#161b22;
+
+            padding:14px;
+
+            border-radius:10px;
+
+            overflow-x:auto;
+
+            color:#58a6ff;
+
+            font-size:13px;
+
+            border:
+            1px solid rgba(88,166,255,0.12);
+        }
+
+        /* FOOTER */
+
+        .footer{
+
+            text-align:center;
+
+            padding:25px;
+
+            color:#8b949e;
+
+            margin-top:20px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="bg-glow"></div>
+
+<!-- NAVBAR -->
+
+<div class="navbar">
+
+    <div class="logo">
+        CodeSphere
+    </div>
+
+    <button class="back-btn"
+            onclick="window.location.href='index.html'">
+
+        ← Back
+
+    </button>
+
+</div>
+
+<!-- TITLE -->
+
+<div class="title">
+
+    <h1>
+        Programming Languages
+    </h1>
+
+    <p>
+        Learn syntax basics and core concepts of popular programming languages.
+    </p>
+
+</div>
+
+<!-- LANGUAGE CARDS -->
+
+<div class="languages">
+
+    <!-- JAVA -->
+
+    <div class="card">
+
+        <h2>Java</h2>
+
+        <div class="intro">
+
+            Java is a powerful object-oriented programming language
+            widely used for backend development, enterprise applications,
+            Android development, and large-scale systems.
+
+        </div>
+
+        <div class="syntax-title">
+            Important Syntaxes
+        </div>
+
+        <div class="syntax">
+
+            <h4>1. Hello World</h4>
+
+            <p>
+                Prints output on screen.
+            </p>
+
+            <pre>
+public class Main{
+   public static void main(String[] args){
+      System.out.println("Hello World");
+   }
+}
+</pre>
+
+        </div>
+
+        <div class="syntax">
+
+            <h4>2. Input</h4>
+
+            <p>
+                Takes input from user using Scanner.
+            </p>
+
+            <pre>
+Scanner sc = new Scanner(System.in);
+int n = sc.nextInt();
+</pre>
+
+        </div>
+
+        <div class="syntax">
+
+            <h4>3. If Else</h4>
+
+            <p>
+                Used for conditions.
+            </p>
+
+            <pre>
+if(n > 0){
+   System.out.println("Positive");
+}else{
+   System.out.println("Negative");
+}
+</pre>
+
+        </div>
+
+        <div class="syntax">
+
+            <h4>4. For Loop</h4>
+
+            <p>
+                Repeats code multiple times.
+            </p>
+
+            <pre>
+for(int i=0;i<5;i++){
+   System.out.println(i);
+}
+</pre>
+
+        </div>
+
+        <div class="syntax">
+
+            <h4>5. Function</h4>
+
+            <p>
+                Creates reusable methods.
+            </p>
+
+            <pre>
+static void greet(){
+   System.out.println("Hi");
+}
+</pre>
+
+        </div>
+
+    </div>
+
+    <!-- PYTHON -->
+
+    <div class="card">
+
+        <h2>Python</h2>
+
+        <div class="intro">
+
+            Python is an easy and beginner-friendly language
+            used in AI, machine learning, data science,
+            automation, backend development, and scripting.
+
+        </div>
+
+        <div class="syntax-title">
+            Important Syntaxes
+        </div>
+
+        <div class="syntax">
+
+            <h4>1. Hello World</h4>
+
+            <p>
+                Prints output on screen.
+            </p>
+
+            <pre>
+print("Hello World")
+</pre>
+
+        </div>
+
+        <div class="syntax">
+
+            <h4>2. Input</h4>
+
+            <p>
+                Takes user input.
+            </p>
+
+            <pre>
+n = int(input("Enter number: "))
+</pre>
+
+        </div>
+
+        <div class="syntax">
+
+            <h4>3. If Else</h4>
+
+            <p>
+                Used for decision making.
+            </p>
+
+            <pre>
+if n > 0:
+   print("Positive")
+else:
+   print("Negative")
+</pre>
+
+        </div>
+
+        <div class="syntax">
+
+            <h4>4. Loop</h4>
+
+            <p>
+                Repeats code multiple times.
+            </p>
+
+            <pre>
+for i in range(5):
+   print(i)
+</pre>
+
+        </div>
+
+        <div class="syntax">
+
+            <h4>5. Function</h4>
+
+            <p>
+                Defines reusable functions.
+            </p>
+
+            <pre>
+def greet():
+   print("Hello")
+</pre>
+
+        </div>
+
+    </div>
+
+    <!-- C++ -->
+
+    <div class="card">
+
+        <h2>C++</h2>
+
+        <div class="intro">
+
+            C++ is a fast and efficient programming language
+            used in competitive programming, game development,
+            operating systems, and performance-based applications.
+
+        </div>
+
+        <div class="syntax-title">
+            Important Syntaxes
+        </div>
+
+        <div class="syntax">
+
+            <h4>1. Hello World</h4>
+
+            <p>
+                Displays output on screen.
+            </p>
+
+            <pre>
+#include<iostream>
+using namespace std;
+
+int main(){
+   cout<<"Hello World";
+}
+</pre>
+
+        </div>
+
+        <div class="syntax">
+
+            <h4>2. Input</h4>
+
+            <p>
+                Takes input using cin.
+            </p>
+
+            <pre>
+int n;
+cin >> n;
+</pre>
+
+        </div>
+
+        <div class="syntax">
+
+            <h4>3. If Else</h4>
+
+            <p>
+                Performs conditional checks.
+            </p>
+
+            <pre>
+if(n > 0){
+   cout<<"Positive";
+}else{
+   cout<<"Negative";
+}
+</pre>
+
+        </div>
+
+        <div class="syntax">
+
+            <h4>4. Loop</h4>
+
+            <p>
+                Executes repeated instructions.
+            </p>
+
+            <pre>
+for(int i=0;i<5;i++){
+   cout<<i;
+}
+</pre>
+
+        </div>
+
+        <div class="syntax">
+
+            <h4>5. Function</h4>
+
+            <p>
+                Creates reusable blocks of code.
+            </p>
+
+            <pre>
+void greet(){
+   cout<<"Hello";
+}
+</pre>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+
+<div class="footer">
+
+    © 2026 CodeSphere | Learn • Code • Grow
+
+</div>
+
+</body>
+
+</html>

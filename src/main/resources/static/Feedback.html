@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Feedback | CodeSphere</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI',sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+            background: linear-gradient(135deg,#f8fafc,#e0f2fe,#f5f5f0);
+        }
+
+        /* GLOW BACKGROUND */
+        .bg1, .bg2{
+            position:absolute;
+            width:400px;
+            height:400px;
+            border-radius:50%;
+            filter: blur(120px);
+            opacity:0.5;
+        }
+
+        .bg1{
+            background:#58a6ff;
+            top:-100px;
+            left:-100px;
+        }
+
+        .bg2{
+            background:#a5b4fc;
+            bottom:-100px;
+            right:-100px;
+        }
+
+        /* TOP BAR */
+        .topbar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:20px 40px;
+        }
+
+        .logo{
+            font-size:24px;
+            font-weight:bold;
+            color:#1f6feb;
+        }
+
+        /* BACK BUTTON */
+        .back-btn{
+            padding:8px 15px;
+            border:none;
+            border-radius:10px;
+            background:rgba(31,111,235,0.1);
+            color:#1f6feb;
+            cursor:pointer;
+        }
+
+        .back-btn:hover{
+            background:#1f6feb;
+            color:white;
+        }
+
+        /* CONTAINER */
+        .container{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:20px;
+            padding:20px;
+        }
+
+        /* CARDS */
+        .card{
+            width:450px;
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(20px);
+            border-radius:20px;
+            padding:25px;
+            box-shadow:0 10px 40px rgba(0,0,0,0.1);
+            border:1px solid rgba(255,255,255,0.4);
+        }
+
+        /* THANK YOU CARD */
+        .thank{
+            text-align:center;
+            color:#333;
+        }
+
+        /* FORM */
+        .form-group{
+            margin-bottom:15px;
+        }
+
+        label{
+            font-size:13px;
+            color:#333;
+        }
+
+        input, select, textarea{
+            width:100%;
+            padding:10px;
+            margin-top:5px;
+            border-radius:10px;
+            border:1px solid rgba(0,0,0,0.1);
+            background: rgba(255,255,255,0.6);
+            outline:none;
+        }
+
+        textarea{
+            resize:none;
+            height:80px;
+        }
+
+        /* BUTTON */
+        button.submit{
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:12px;
+            background: linear-gradient(90deg,#1f6feb,#58a6ff);
+            color:white;
+            font-size:15px;
+            cursor:pointer;
+            margin-top:10px;
+        }
+
+        button.submit:hover{
+            box-shadow:0 0 15px #58a6ff;
+        }
+
+        /* SUCCESS CARD */
+        .success{
+            display:none;
+            text-align:center;
+            color:white;
+            background: linear-gradient(135deg,#1f6feb,#58a6ff);
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="bg1"></div>
+<div class="bg2"></div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+    <div class="logo">CodeSphere</div>
+    <button class="back-btn" onclick="history.back()">Back</button>
+</div>
+
+<div class="container">
+
+    <!-- THANK YOU CARD -->
+    <div class="card thank">
+        <h3>Thank you for using CodeSphere 💙</h3>
+        <p>Your feedback helps us improve and build a better coding experience.</p>
+    </div>
+
+    <!-- FORM -->
+    <div class="card" id="formCard">
+
+        <form onsubmit="submitFeedback(event)">
+
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" required>
+            </div>
+
+            <div class="form-group">
+                <label>Mobile</label>
+                <input type="tel">
+            </div>
+
+            <div class="form-group">
+                <label>Feedback Type</label>
+                <select id="type" onchange="updatePlaceholder()">
+                    <option value="complaint">Complaint</option>
+                    <option value="like">Liking</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Your Feedback</label>
+                <textarea id="message" placeholder="Write your complaint..."></textarea>
+            </div>
+
+            <button type="submit" class="submit">Submit Feedback</button>
+
+        </form>
+
+    </div>
+
+    <!-- SUCCESS CARD -->
+    <div class="card success" id="successCard">
+        <h3>Thank you for your feedback 🎉</h3>
+        <p>We appreciate your time and effort.</p>
+    </div>
+
+</div>
+
+<script>
+
+    function updatePlaceholder(){
+        const type = document.getElementById("type").value;
+        const msg = document.getElementById("message");
+
+        if(type === "complaint"){
+            msg.placeholder = "Write your complaint...";
+        } else {
+            msg.placeholder = "Tell us what you liked...";
+        }
+    }
+
+    function submitFeedback(e){
+        e.preventDefault();
+
+        document.getElementById("formCard").style.display="none";
+        document.getElementById("successCard").style.display="block";
+    }
+
+</script>
+
+</body>
+</html>

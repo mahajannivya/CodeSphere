@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register | CodeSphere</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI',sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+            background: linear-gradient(135deg,#f8fafc,#e0f2fe,#f5f5f0);
+        }
+
+        /* GLOW */
+        .bg1, .bg2{
+            position:absolute;
+            width:400px;
+            height:400px;
+            border-radius:50%;
+            filter: blur(120px);
+            opacity:0.6;
+        }
+        .bg1{ background:#58a6ff; top:-100px; left:-100px; }
+        .bg2{ background:#a5b4fc; bottom:-100px; right:-100px; }
+
+        /* TOPBAR */
+        .topbar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:20px 40px;
+        }
+
+        .logo{
+            font-size:24px;
+            font-weight:bold;
+            color:#1f6feb;
+        }
+
+
+
+        /* CENTER */
+        .wrapper{
+            display:flex;
+            justify-content:center;
+            margin-top:40px;
+        }
+
+        /* CARD */
+        .container{
+            width:480px;
+            padding:25px 30px;
+            border-radius:20px;
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(20px);
+            border:1px solid rgba(255,255,255,0.4);
+            box-shadow:0 10px 40px rgba(0,0,0,0.1);
+            text-align:center;
+            transition:0.3s;
+        }
+        .container:hover{
+            transform:translateY(-5px);
+        }
+
+        /* FORM */
+        .form-row{
+            display:flex;
+            gap:15px;
+        }
+        .form-group{
+            margin-bottom:15px;
+            flex:1;
+            text-align:left;
+        }
+
+        input{
+            width:100%;
+            padding:10px;
+            border-radius:10px;
+            border:1px solid rgba(0,0,0,0.1);
+            background:rgba(255,255,255,0.6);
+        }
+
+        button{
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:12px;
+            background:linear-gradient(90deg,#1f6feb,#58a6ff);
+            color:white;
+            margin-top:10px;
+        }
+.back-btn{
+    padding:6px 12px;
+    border:none;
+    border-radius:8px;
+    background:rgba(31,111,235,0.1);
+    color:#1f6feb;
+    cursor:pointer;
+    font-size:13px;
+    width:auto;            /* key fix */
+    display:inline-block;  /* prevents stretching */
+}
+
+.back-btn:hover{
+    background:#1f6feb;
+    color:white;
+}
+    </style>
+</head>
+
+<body>
+
+<div class="bg1"></div>
+<div class="bg2"></div>
+
+<div class="topbar">
+    <div class="logo">CodeSphere</div>
+    <button class="back-btn" onclick="history.back()">Back</button>
+</div>
+
+<div class="wrapper">
+    <div class="container">
+
+        <h3>Create Account</h3>
+
+        <form onsubmit="register(event)">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <input type="text" id="name" placeholder="Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Email" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <input type="tel" id="mobile" placeholder="Mobile">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="password" id="confirm" placeholder="Confirm Password" required>
+            </div>
+
+            <button type="submit">Register</button>
+            <div style="margin-top:15px; font-size:14px;">
+                Already have an account?
+                <a href="login.html" style="color:#1f6feb; text-decoration:none;">
+                    Login
+                </a>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script>
+    function register(e){
+    e.preventDefault();
+
+    const username = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const confirm = document.getElementById("confirm").value;
+    const mobile = document.getElementById("mobile").value;
+
+    if(password !== confirm){
+        alert("Passwords do not match");
+        return;
+    }
+
+    fetch("http://localhost:8080/auth/register",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+            username: username,
+            email: email,
+            password: password,
+            mobile: mobile
+        })
+    })
+    .then(res => res.text())
+    .then(msg => {
+        console.log("Server Response:", msg);
+
+        if(msg.toLowerCase().includes("success")){
+            alert("Registration Successful ");
+            window.location.href = "login.html";
+        } else {
+            alert(msg);
+        }
+    })
+    .catch(err => {
+        console.error("Error:", err);
+        alert("Something went wrong ");
+    });
+}
+</script>
+
+</body>
+</html>
