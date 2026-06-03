@@ -27,7 +27,7 @@ public class CodeController {
                 req.getLanguage()
         );
         //sharing output live
-        messagingTemplate.convertAndSend("/topic/output/" + roomId, result);
+        messagingTemplate.convertAndSend("/topic/" + roomId + "/output", result);
 
         return result;
     }

@@ -557,12 +557,16 @@
 
 <script src="https://unpkg.com/monaco-editor@0.44.0/min/vs/loader.js"></script>
 
+
 <script>
 
     let editor;
     let stompClient;
     let isRemoteChange = false;
     let timeout;
+
+    // FIX
+    let initialSyncDone = true;
 
     /* USER */
 
@@ -636,28 +640,20 @@
         document.getElementById("language").value =
         selectedLang;
 
-        const saved =
-        localStorage.getItem("code_" + roomId);
-
-        if(saved && saved.trim() !== ""){
-
-            editor.setValue(saved);
-        }
-        else{
-
-            setInitialTemplate(selectedLang);
-        }
-
         connectWebSocket();
+
+        setTimeout(() => {
+
+            if(editor.getValue().trim() === ""){
+
+                setInitialTemplate(selectedLang);
+            }
+
+        }, 1500);
 
         editor.onDidChangeModelContent(() => {
 
             if(isRemoteChange) return;
-
-            localStorage.setItem(
-                "code_" + roomId,
-                editor.getValue()
-            );
 
             clearTimeout(timeout);
 
@@ -673,8 +669,12 @@
                         {},
 
                         JSON.stringify({
-                            roomId:roomId,
-                            code:editor.getValue()
+
+                            roomId: roomId,
+
+                            code: editor.getValue(),
+
+                            senderId: userId
                         })
                     );
                 }
@@ -704,11 +704,12 @@
 
     function connectWebSocket(){
 
-        const socket =
-        new SockJS("/ws");
+        const socket = new SockJS("/ws");
 
-        stompClient =
-        Stomp.over(socket);
+        stompClient = Stomp.over(socket);
+
+        const inputBox =
+        document.getElementById("input");
 
         stompClient.connect({}, function(){
 
@@ -720,18 +721,14 @@
 
                 function(msg){
 
-                    const data =
-                    JSON.parse(msg.body);
+                    const data = JSON.parse(msg.body);
 
                     document.getElementById("userCount")
-                    .innerText =
-                    "Users : " + data.count;
+                    .innerText = "Users : " + data.count;
                 }
             );
 
-            /* CODE */
-
-            let firstLoad = true;
+            /* CODE SYNC */
 
             stompClient.subscribe(
 
@@ -739,23 +736,50 @@
 
                 function(msg){
 
-                    if(firstLoad &&
-                       editor.getValue().length > 0){
+                    const data = JSON.parse(msg.body);
 
-                        firstLoad = false;
+                    if(data.senderId === userId){
                         return;
                     }
 
-                    if(editor.getValue() === msg.body)
+                    if(!data.code){
                         return;
+                    }
 
                     isRemoteChange = true;
 
-                    editor.setValue(msg.body);
+                    const position =
+                    editor.getPosition();
+
+                    editor.setValue(data.code);
+
+                    if(position){
+                        editor.setPosition(position);
+                    }
 
                     isRemoteChange = false;
 
-                    firstLoad = false;
+                    initialSyncDone = true;
+                }
+            );
+
+            /* INPUT SYNC */
+
+            stompClient.subscribe(
+
+                `/topic/${roomId}/input`,
+
+                function(msg){
+
+                    const data = JSON.parse(msg.body);
+
+                    if(data.senderId === userId){
+                        return;
+                    }
+
+                    inputBox.value = data.input || "";
+
+                    initialSyncDone = true;
                 }
             );
 
@@ -772,7 +796,7 @@
                 }
             );
 
-            /* JOIN */
+            /* JOIN ROOM */
 
             stompClient.send(
 
@@ -782,13 +806,47 @@
 
                 JSON.stringify({
 
-                    roomId:roomId,
+                    roomId: roomId,
 
-                    userId:userId,
+                    userId: userId,
 
-                    username:username
+                    username: username
                 })
             );
+
+            /* INPUT LIVE SEND */
+
+            let inputTimeout;
+
+            inputBox.addEventListener("input", () => {
+
+                clearTimeout(inputTimeout);
+
+                inputTimeout = setTimeout(() => {
+
+                    if(stompClient &&
+                       stompClient.connected){
+
+                        stompClient.send(
+
+                            "/app/input",
+
+                            {},
+
+                            JSON.stringify({
+
+                                roomId: roomId,
+
+                                input: inputBox.value,
+
+                                senderId: userId
+                            })
+                        );
+                    }
+
+                }, 200);
+            });
+
         });
     }
 
@@ -851,116 +909,143 @@ int main(){
     }
 
     /* RUN CODE */
-function runCode(){
 
-    const code =
-    editor.getValue();
+    function runCode(){
 
-    const input =
-    document.getElementById("input").value;
+        // IMPORTANT FIX
 
-    const language =
-    document.getElementById("language").value;
 
-    /* CHECK INPUT REQUIREMENT */
 
-    let needsInput = false;
+        const code =
+        editor.getValue();
 
-    if(language === "java"){
+        const input =
+        document.getElementById("input").value;
 
-        if(
-            code.includes("nextInt(") ||
-            code.includes("nextLine(") ||
-            code.includes("nextDouble(") ||
-            code.includes("next(")
-        ){
-            needsInput = true;
+        const language =
+        document.getElementById("language").value;
+
+        let needsInput = false;
+
+        if(language === "java"){
+
+            if(
+                code.includes("nextInt(") ||
+                code.includes("nextLine(") ||
+                code.includes("nextDouble(") ||
+                code.includes("next(")
+            ){
+                needsInput = true;
+            }
         }
-    }
 
-    else if(language === "python"){
+        else if(language === "python"){
 
-        if(code.includes("input(")){
+            if(code.includes("input(")){
 
-            needsInput = true;
+                needsInput = true;
+            }
         }
-    }
 
-    else if(language === "cpp"){
+        else if(language === "cpp"){
 
-        if(
-            code.includes("cin >>")
-        ){
-            needsInput = true;
+            if(
+                code.includes("cin >>")
+            ){
+                needsInput = true;
+            }
         }
-    }
 
-    /* ALERT */
+        if(needsInput &&
+           input.trim() === ""){
 
-    if(needsInput &&
-       input.trim() === ""){
+            alert(
+                "This program requires input.\nPlease enter input before running."
+            );
 
-        alert(
-            "This program requires input.\nPlease enter input before running."
-        );
+            return;
+        }
 
-        return;
-    }
+        // FORCE LATEST SYNC
 
-    document.getElementById("output")
-    .innerText = "Running...";
-
-    fetch(`/code/run/${roomId}`, {
-
-        method:"POST",
-
-        headers:{
-            "Content-Type":"application/json"
-        },
-
-        body:JSON.stringify({
-
-            code:code,
-
-            input:input,
-
-            language:language
-        })
-    })
-
-    .then(res => res.text())
-
-    .then(data => {
-
-        document.getElementById("output")
-        .innerText = data;
-
-        if(stompClient){
+        if(stompClient &&
+           stompClient.connected){
 
             stompClient.send(
 
-                "/app/output",
+                "/app/code",
 
                 {},
 
                 JSON.stringify({
 
-                    roomId:roomId,
+                    roomId: roomId,
 
-                    output:data
+                    code: code,
+
+                    senderId: userId
+                })
+            );
+
+            stompClient.send(
+
+                "/app/input",
+
+                {},
+
+                JSON.stringify({
+
+                    roomId: roomId,
+
+                    input: input,
+
+                    senderId: userId
                 })
             );
         }
-    })
-
-    .catch(() => {
 
         document.getElementById("output")
-        .innerText =
-        "Execution Error";
-    });
-}
+        .innerText = "Running...";
 
+        // WAIT FOR SYNC
+
+        setTimeout(() => {
+
+            fetch(`/code/run/${roomId}`, {
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+
+                    code:code,
+
+                    input:input,
+
+                    language:language
+                })
+            })
+
+            .then(res => res.text())
+
+            .then(data => {
+
+                document.getElementById("output")
+                .innerText = data;
+            })
+
+            .catch(() => {
+
+                document.getElementById("output")
+                .innerText =
+                "Execution Error";
+            });
+
+        }, 150);
+    }
 
     /* EXIT */
 
@@ -971,6 +1056,7 @@ function runCode(){
     }
 
 </script>
+```
 
 </body>
 </html>

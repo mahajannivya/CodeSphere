@@ -4,9 +4,7 @@
 <head>
 
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>CodeSphere</title>
 
@@ -24,41 +22,56 @@
         }
 
         body{
-
             background:
             radial-gradient(circle at top left,#1f6feb22,transparent 35%),
             #0d1117;
 
             color:white;
-
             overflow-x:hidden;
+        }
+
+        body{
+            will-change:scroll-position;
+        }
+
+        .card,
+        .nav-btn,
+        .collab-img{
+            will-change:transform;
         }
 
         /* BACKGROUND GLOW */
 
         .bg-glow{
-
             position:fixed;
 
-            width:350px;
-            height:350px;
+            width:260px;
+            height:260px;
 
             background:
-            radial-gradient(circle,#1f6feb33,transparent);
+            radial-gradient(circle,
+            rgba(31,111,235,0.18),
+            transparent 70%);
 
-            filter:blur(80px);
-
-            top:-100px;
-            left:-100px;
+            top:-60px;
+            left:-60px;
 
             z-index:-1;
 
             pointer-events:none;
+
+            opacity:0.8;
+
+            filter:blur(30px);
+
+            will-change:transform;
         }
 
         /* NAVBAR */
 
         .navbar{
+
+            width:100%;
 
             display:flex;
 
@@ -66,11 +79,11 @@
 
             align-items:center;
 
-            padding:16px 35px;
+            padding:16px 40px;
 
             background:rgba(255,255,255,0.04);
 
-            backdrop-filter:blur(10px);
+            backdrop-filter:blur(8px);
 
             border-bottom:
             1px solid rgba(88,166,255,0.12);
@@ -116,7 +129,7 @@
             0 0 10px rgba(88,166,255,0.5);
         }
 
-        /* NAV BUTTONS AREA */
+        /* RIGHT NAV LINKS */
 
         .nav-links{
 
@@ -124,93 +137,92 @@
 
             align-items:center;
 
-            gap:10px;
+            gap:12px;
 
-            flex-wrap:nowrap;
+            flex-wrap:wrap;
         }
-/* NAV BUTTONS */
 
-.nav-btn{
-     padding:10px 16px;
-    border-radius:10px;
-    border: 1px solid rgba(88,166,255,0.20);
-    background:rgba(255,255,255,0.04);
-    color:white;
-    cursor:pointer;
-    font-size:14px;
-    white-space:nowrap;
-    position:relative;
-     overflow:hidden;
+        /* NAV BUTTONS */
 
-    transition:
-    transform 0.35s ease,
-    border-color 0.35s ease,
-    box-shadow 0.35s ease,
-    background 0.35s ease,
-    color 0.35s ease;
-}
+        .nav-btn{
 
-/* BEAUTIFUL HOVER EFFECT */
+            padding:10px 18px;
 
-.nav-btn:hover{
+            border-radius:10px;
 
-    transform:translateY(-3px) scale(1.03);
+            border:1px solid rgba(88,166,255,0.20);
 
-    border-color:#58a6ff;
+            background:rgba(255,255,255,0.04);
 
-    background:
-    rgba(88,166,255,0.10);
+            color:white;
 
-    box-shadow:
-    0 0 8px rgba(88,166,255,0.35),
-    0 0 18px rgba(88,166,255,0.20),
-    inset 0 0 12px rgba(88,166,255,0.08);
+            cursor:pointer;
 
-    color:#ffffff;
-}
+            font-size:14px;
 
-/* CODE NOW SPECIAL BUTTON */
+            white-space:nowrap;
 
-.code-btn{
+            transition:
+            transform 0.35s ease,
+            border-color 0.35s ease,
+            box-shadow 0.35s ease,
+            background 0.35s ease,
+            color 0.35s ease;
+        }
 
-    background:
-    linear-gradient(135deg,#1f6feb,#388bfd);
+        .nav-btn:hover{
 
-    border:
-    1px solid rgba(88,166,255,0.45);
+            transform:translateY(-2px);
 
-    box-shadow:
-    0 0 10px rgba(88,166,255,0.30),
-    0 0 25px rgba(88,166,255,0.18);
+            border-color:#58a6ff;
 
-    font-weight:600;
-}
+            background:
+            rgba(88,166,255,0.10);
 
-/* CODE NOW HOVER */
+            box-shadow:
+            0 0 10px rgba(88,166,255,0.15);
 
-.code-btn:hover{
+            color:#ffffff;
+        }
 
-    transform:translateY(-3px) scale(1.05);
+        /* SPECIAL BUTTON */
 
-    box-shadow:
-    0 0 12px rgba(88,166,255,0.55),
-    0 0 28px rgba(88,166,255,0.35),
-    0 0 45px rgba(88,166,255,0.18);
+        .code-btn{
 
-    background:
-    linear-gradient(135deg,#388bfd,#58a6ff);
-}
+            background:
+            linear-gradient(135deg,#1f6feb,#388bfd);
 
+            border:
+            1px solid rgba(88,166,255,0.45);
 
+            box-shadow:
+            0 0 10px rgba(88,166,255,0.30),
+            0 0 25px rgba(88,166,255,0.18);
 
-        /* HERO SECTION */
+            font-weight:600;
+        }
+
+        .code-btn:hover{
+
+            transform:translateY(-3px) scale(1.05);
+
+            box-shadow:
+            0 0 12px rgba(88,166,255,0.55),
+            0 0 28px rgba(88,166,255,0.35),
+            0 0 45px rgba(88,166,255,0.18);
+
+            background:
+            linear-gradient(135deg,#388bfd,#58a6ff);
+        }
+
+        /* HERO */
 
         .hero{
 
             text-align:center;
 
             padding:
-            110px 20px 40px;
+            110px 20px 50px;
         }
 
         .hero h1{
@@ -233,9 +245,7 @@
         @keyframes titleFade{
 
             to{
-
                 opacity:1;
-
                 transform:translateY(0);
             }
         }
@@ -260,7 +270,7 @@
             }
         }
 
-        /* IMAGE SECTION */
+        /* IMAGES */
 
         .collab{
 
@@ -389,18 +399,22 @@
 
         /* RESPONSIVE */
 
-        @media(max-width:1200px){
+        @media(max-width:1100px){
 
             .navbar{
 
                 flex-direction:column;
 
-                gap:18px;
+                gap:20px;
+
+                padding:20px;
+            }
+
+            .nav-left{
+                flex-direction:column;
             }
 
             .nav-links{
-
-                flex-wrap:wrap;
 
                 justify-content:center;
             }
@@ -426,6 +440,26 @@
             }
         }
 
+        @media(max-width:600px){
+
+            .hero h1{
+                font-size:38px;
+            }
+
+            .hero p{
+                font-size:18px;
+            }
+
+            .nav-links{
+                gap:8px;
+            }
+
+            .nav-btn{
+                font-size:13px;
+                padding:9px 14px;
+            }
+        }
+
     </style>
 
 </head>
@@ -440,64 +474,44 @@
 
 <div class="navbar">
 
-    <!-- LEFT SIDE -->
-
     <div class="nav-left">
 
         <div class="logo">
             CodeSphere
         </div>
 
-        <!-- CODE NOW BUTTON -->
-
         <button class="nav-btn code-btn"
                 onclick="window.location.href='Login.html'">
-
             Code Now
-
         </button>
 
     </div>
-
-    <!-- RIGHT SIDE -->
 
     <div class="nav-links">
 
         <button class="nav-btn"
                 onclick="window.location.href='languages.html'">
-
             Languages
-
         </button>
 
         <button class="nav-btn"
                 onclick="window.location.href='Login.html'">
-
             Login
-
         </button>
 
         <button class="nav-btn"
                 onclick="window.location.href='Register.html'">
-
             Registration
-
         </button>
-
-
 
         <button class="nav-btn"
                 onclick="window.location.href='feedback.html'">
-
             Feedback
-
         </button>
 
         <button class="nav-btn"
                 onclick="window.location.href='about.html'">
-
             About Us
-
         </button>
 
     </div>
@@ -508,9 +522,7 @@
 
 <div class="hero">
 
-    <h1>
-        CodeSphere
-    </h1>
+    <h1>CodeSphere</h1>
 
     <p>
         Collaborative Online Code Editor for Developers
@@ -522,17 +534,14 @@
 
 <div class="collab">
 
-    <img
-            src="https://images.unsplash.com/photo-1555066931-4365d14bab8c"
-            class="collab-img">
+    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c"
+         class="collab-img">
 
-    <img
-            src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d"
-            class="collab-img">
+    <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d"
+         class="collab-img">
 
-    <img
-            src="https://images.unsplash.com/photo-1519389950473-47ba0277781c"
-            class="collab-img">
+    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c"
+         class="collab-img">
 
 </div>
 
@@ -553,7 +562,7 @@
 
     <div class="card">
 
-        <h3> Real-Time Collaboration</h3>
+        <h3>Real-Time Collaboration</h3>
 
         <p>
             Collaborate instantly with teammates through live code synchronization.
@@ -566,14 +575,14 @@
         <h3>Multi-Language Support</h3>
 
         <p>
-            Supports Java, Python and C++ .
+            Supports Java, Python and C++.
         </p>
 
     </div>
 
     <div class="card">
 
-        <h3> Secure Private Rooms</h3>
+        <h3>Secure Private Rooms</h3>
 
         <p>
             Create protected coding rooms for projects, interviews, and teams.

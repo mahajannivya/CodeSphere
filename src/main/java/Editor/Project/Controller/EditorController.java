@@ -4,6 +4,7 @@ import Editor.Project.Entity.JoinMessage;
 import Editor.Project.Entity.UserUpdate;
 import Editor.Project.Service.RoomService;
 
+import Editor.Project.dto.CodeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -45,9 +46,21 @@ public class EditorController {
         );
 
         // send existing code to the new user instantly
-        messagingTemplate.convertAndSend(
-                "/topic/" + roomId + "/code",
+        CodeMessage codeMessage = new CodeMessage();
+
+        codeMessage.setRoomId(roomId);
+
+        codeMessage.setCode(
                 roomService.getCode(roomId)
+        );
+
+        codeMessage.setSenderId("server");
+
+        messagingTemplate.convertAndSend(
+
+                "/topic/" + roomId + "/code",
+
+                codeMessage
         );
     }
 
@@ -77,15 +90,20 @@ public class EditorController {
     }
     //Synchronizes live code editing
     @MessageMapping("/code")
-    public void syncCode(@Payload Map<String, String> payload) {
-        String roomId = payload.get("roomId");// extract roomId
-        String code = payload.get("code");//extract code
+    public void syncCode(@Payload CodeMessage message) {
 
-        roomService.updateCode(roomId, code);
-        //broadcasts code to all the users instantly
+        String roomId = message.getRoomId();
+
+        roomService.updateCode(
+                roomId,
+                message.getCode()
+        );
+
         messagingTemplate.convertAndSend(
+
                 "/topic/" + roomId + "/code",
-                code
+
+                message
         );
     }
 
@@ -101,4 +119,27 @@ public class EditorController {
                 output
         );
     }
+
+    @MessageMapping("/input")
+    public void syncInput(
+            @Payload Map<String, String> payload){
+
+        String roomId = payload.get("roomId");
+
+        String input = payload.get("input");
+
+        // SAVE INPUT
+
+        roomService.updateInput(roomId, input);
+
+        // SEND TO USERS
+
+        messagingTemplate.convertAndSend(
+
+                "/topic/" + roomId + "/input",
+
+                payload
+        );
+    }
+
 }

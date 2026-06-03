@@ -15,6 +15,22 @@ public class RoomService {
     private final Map<String, String> roomCodeMap = new ConcurrentHashMap<>();
     private final Map<String, String> userNames = new ConcurrentHashMap<>();
 
+    private final Map<String, String> roomInputs =
+            new ConcurrentHashMap<>();
+
+    public void updateInput(String roomId,
+                            String input){
+
+        roomInputs.put(roomId, input);
+    }
+
+    public String getInput(String roomId){
+
+        return roomInputs.getOrDefault(roomId, "");
+    }
+
+
+
     public int addUser(String roomId, String userId, String username) {
         roomUsers.putIfAbsent(roomId, ConcurrentHashMap.newKeySet());
         roomUsers.get(roomId).add(userId);
