@@ -3,6 +3,8 @@
 CodeSphere is a web-based real-time code editor that allows users to write, compile, and execute code in multiple programming languages directly from the browser. The platform provides an interactive coding environment with syntax highlighting, custom input support, and instant output generation, making it suitable for learning, practice, and coding demonstrations.
 
 **Features**
+
+
 Real-time code execution
 Multi-language support (Java, Python, C++, JavaScript, etc.)
 User-friendly and responsive interface
@@ -25,6 +27,8 @@ Dashboard with easy navigation
 - Git and Github
 
 **Prerequisites**
+
+
 Java 17 or above
 Maven
 MySQL
@@ -45,6 +49,8 @@ IntelliJ IDEA
 "http://localhost:8080"
 
 **Objectives**
+
+
 Provide a simple and efficient online coding environment.
 Enable users to practice coding without local compiler setup.
 Improve coding productivity through instant execution and feedback.
