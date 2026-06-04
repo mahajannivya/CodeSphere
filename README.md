@@ -13,17 +13,13 @@ Responsive design for different screen sizes
 Dashboard with easy navigation
 
 **Technologies Used**
-###Frontend
 - HTML5
 - CSS3
 - JavaScript
-###Backend
 - Java
 - Spring Boot
 - REST APIs
-###Database
 - MySQL
-###Development Tools
 - IntelliJ IDEA
 - Maven
 - Git and Github
