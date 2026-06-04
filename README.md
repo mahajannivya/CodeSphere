@@ -5,14 +5,14 @@ CodeSphere is a web-based real-time code editor that allows users to write, comp
 **Features**
 
 
-Real-time code execution
-Multi-language support (Java, Python, C++, JavaScript, etc.)
-User-friendly and responsive interface
-Custom input support
-Instant output display
-Code synchronization between editor and output panel
-Responsive design for different screen sizes
-Dashboard with easy navigation
+- Real-time code execution
+- Multi-language support (Java, Python, C++, JavaScript, etc.)
+- User-friendly and responsive interface
+- Custom input support
+- Instant output display
+- Code synchronization between editor and output panel
+- Responsive design for different screen sizes
+- Dashboard with easy navigation
 
 **Technologies Used**
 - HTML5
@@ -29,10 +29,10 @@ Dashboard with easy navigation
 **Prerequisites**
 
 
-Java 17 or above
-Maven
-MySQL
-IntelliJ IDEA
+- Java 17 or above
+- Maven
+- MySQL
+- IntelliJ IDEA
 
 
 **Steps to Run**
@@ -51,7 +51,7 @@ IntelliJ IDEA
 **Objectives**
 
 
-Provide a simple and efficient online coding environment.
-Enable users to practice coding without local compiler setup.
-Improve coding productivity through instant execution and feedback.
+- Provide a simple and efficient online coding environment.
+- Enable users to practice coding without local compiler setup.
+- Improve coding productivity through instant execution and feedback.
 
